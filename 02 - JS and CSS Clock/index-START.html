@@ -13,7 +13,15 @@
         <div class="hand min-hand"></div>
         <div class="hand second-hand"></div>
       </div>
+      <br><br>
+      <div class="digital">
+        <h1 id="hour"></h1>
+        <h1 id="minute"></h1>
+        <h1 id="second"></h1>
+      </div>
     </div>
+
+   
 
 
   <style>
@@ -33,6 +41,12 @@
       min-height: 100vh;
       align-items: center;
     }
+
+    .digital {
+      display: flex;
+      color: white;
+    }
+
 
     .clock {
       width: 30rem;
@@ -62,12 +76,46 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all 0.5s;
     }
 
   </style>
 
   <script>
+    function setDate() {
+      const secondHand = document.querySelector('.second-hand')
+      const minHand = document.querySelector('.min-hand')
+      const hourHand = document.querySelector('.hour-hand')
+      const now = new Date()
+      let seconds = now.getSeconds()
+      let minutes = now.getMinutes()
+      let hour = now.getHours() % 12
+      
+      const secondsDegrees = (seconds / 60) * 360
+      const minutesDegrees = (minutes / 60) * 360
+      const hourDegrees = (hour / 12) * 360
+      secondHand.style.transform = `rotate(${secondsDegrees+90}deg)`
+      minHand.style.transform = `rotate(${minutesDegrees+90}deg)`
+      hourHand.style.transform = `rotate(${hourDegrees+90}deg)`
+      console.log(seconds)
 
+      const digitalHour = document.getElementById("hour")
+      const digitalMin = document.getElementById("minute")
+      const digitalSec = document.getElementById("second")
+      if (minutes < 10) {
+        minutes = "0" + minutes
+      } else if (seconds < 10) {
+        seconds = "0" + seconds
+      } else if (hour > 12) {
+        hour = hour % 12
+      }
+      digitalHour.innerHTML = hour
+      digitalMin.innerHTML = ":" + minutes + ":"
+      digitalSec.innerHTML = seconds
+    }
+    setInterval(setDate, 1000)
 
   </script>
 </body>
